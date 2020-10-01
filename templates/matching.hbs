@@ -2,9 +2,10 @@
 
   {{> component this}}
 
-  <div class="component__widget matching__widget{{#unless _isEnabled}} is-disabled{{#if _isInteractionComplete}} is-complete is-submitted show-user-answer{{#if _isCorrect}} is-correct{{/if}}{{/if}}{{/unless}}">
+  <div id="match{{_id}}" class="component__widget matching__widget{{#unless _isEnabled}} is-disabled{{#if _isInteractionComplete}} is-complete is-submitted show-user-answer{{#if _isCorrect}} is-correct{{/if}}{{/if}}{{/unless}}">
 
     {{#each _items}}
+    <div class="{{../_id}}-fbnotify a11y-ignore" aria-hidden="true" tabindex="-1" style="display:none;">********** [ MATCHING Question Options Below ] **********</div>
     <div class="matching__item item item-{{@index}}{{#unless ../_isEnabled}}{{#if ../_canShowMarking}}{{#if _isCorrect}} is-correct{{else}} is-incorrect{{/if}}{{/if}}{{/unless}}">
 
       {{#if text}}
@@ -36,5 +37,20 @@
   </div>
 
   <div class="btn__container"></div>
-
+    {{#if _feedback.correct}}
+    <div class="{{_id}}-fbnotify a11y-ignore" aria-hidden="true" tabindex="-1" style="display:none;">[ Correct Feedback ] = {{{_feedback.correct}}}</div>
+    {{/if}}
+    {{#if _feedback._incorrect.final}}
+        <div class="{{_id}}-fbnotify a11y-ignore" aria-hidden="true" tabindex="-1" style="display:none;">[ Incorrect Final Feedback ] = {{{_feedback._incorrect.final}}}</div>
+    {{/if}}
+    {{#if _feedback._incorrect.notFinal}}
+        <div class="{{_id}}-fbnotify a11y-ignore" aria-hidden="true" tabindex="-1" style="display:none;">[ Incorrect Not Final Feedback ] = {{{_feedback._incorrect.notFinal}}}</div>
+    {{/if}}
+    {{#if _feedback._partlyCorrect.final}}
+        <div class="{{_id}}-fbnotify a11y-ignore" aria-hidden="true" tabindex="-1" style="display:none;">[ Partly Correct Feedback for the Final Attempt ] = {{{_feedback._partlyCorrect.final}}}</div>
+    {{/if}}
+    {{#if _feedback._partlyCorrect.notFinal}}
+        <div class="{{_id}}-fbnotify a11y-ignore" aria-hidden="true" tabindex="-1" style="display:none;">[ Partly Correct Not Final Feedback ] = {{{_feedback._partlyCorrect.notFinal}}}</div>
+    {{/if}}
+    <script class="{{_id}}-fbnotify">if ( !$('html').hasClass('pagesave2txt') ) { $( ".{{_id}}-fbnotify" ).remove(); }</script>
 </div>
